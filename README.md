@@ -19,6 +19,8 @@ Ce projet déploie le modèle de Machine Learning (Random Forest) développé lo
 git clone https://github.com/antoinechemavonian/futurisys-api.git
 cd futurisys-api
 pip install -r requirements.txt
+```
+
 
 ##  Structure du projet
 - `app/main.py` : Le code de l'API.
