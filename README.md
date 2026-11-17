@@ -27,4 +27,6 @@ pip install -r requirements.txt
 - `tests/test_api.py` : Les tests unitaires.
 - `modele_attrition.joblib` : Le modèle entraîné.
 
-- 
+### Lancement de l'API
+```bash
+uvicorn app.main:app --reload
