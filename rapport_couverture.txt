@@ -1,0 +1,18 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-8.4.2, pluggy-1.7.0
+rootdir: /content/futurisys-api
+plugins: cov-7.1.0, platformdirs-4.14.3, langsmith-0.14.17, anyio-4.16.0, typeguard-4.6.0
+collected 2 items
+
+tests/test_api.py ..                                                     [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.18-final-0 _______________
+
+Name              Stmts   Miss  Cover
+-------------------------------------
+app/__init__.py       0      0   100%
+app/main.py          47      0   100%
+-------------------------------------
+TOTAL                47      0   100%
+============================== 2 passed in 3.34s ===============================
