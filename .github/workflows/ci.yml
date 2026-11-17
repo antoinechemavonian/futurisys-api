@@ -23,3 +23,9 @@ jobs:
         run: |
           pip install pytest httpx
           pytest --cov=app tests/test_api.py
+
+      - name: Lancer les tests
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          pytest --cov=app tests/test_api.py
