@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
 import pandas as pd
-from typing import Dict, Any
 
+# Chargement du modèle et de ses métadonnées
 objets = joblib.load("modele_attrition.joblib")
 modele = objets["modele"]
 colonnes = objets["colonnes"]
@@ -11,8 +11,11 @@ seuil = objets["seuil"]
 
 app = FastAPI(title="API Attrition TechNova")
 
+# Définition de ce que l'API attend en entrée
 class EmployeInput(BaseModel):
-    data: Dict[str, Any]
+    age: int
+    revenu_mensuel: float
+    annees_dans_l_entreprise: int
 
 @app.get("/health")
 def health():
@@ -20,22 +23,19 @@ def health():
 
 @app.post("/predict")
 def predict(employe: EmployeInput):
-    try:
-        input_dict = employe.data
-        input_data = pd.DataFrame([input_dict])
-        
-        for col in colonnes:
-            if col not in input_data.columns:
-                # On met "0" pour les chiffres, et "Non" pour le texte
-                input_data[col] = 0 
-                
-        input_data = input_data[colonnes]
-        
-        proba = modele.predict_proba(input_data)[:, 1][0]
-        prediction = "Oui" if proba >= seuil else "Non"
-        
-        return {"prediction": prediction, "probabilite": float(proba)}
-        
-    except Exception as e:
-        # Si ça plante, on renvoie l'erreur exacte pour comprendre !
-        return {"erreur_interne": str(e)}
+    # 1. On crée un dictionnaire avec toutes les colonnes requises initialisées à 0
+    donnees_completes = {col: 0 for col in colonnes}
+
+    # 2. On injecte les valeurs reçues via l'API
+    donnees_completes["age"] = employe.age
+    donnees_completes["revenu_mensuel"] = employe.revenu_mensuel
+    donnees_completes["annees_dans_l_entreprise"] = employe.annees_dans_l_entreprise
+
+    # 3. On crée le DataFrame avec la structure exacte attendue par le modèle
+    input_data = pd.DataFrame([donnees_completes])[colonnes]
+
+    # Prédiction
+    proba = modele.predict_proba(input_data)[:, 1][0]
+    prediction = "Oui" if proba >= seuil else "Non"
+
+    return {"prediction": prediction, "probabilite": float(proba)}
