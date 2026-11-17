@@ -6,6 +6,7 @@ Ce projet déploie le modèle de Machine Learning (Random Forest) développé lo
 - Python 3 / FastAPI
 - Scikit-Learn / Pandas
 - Pytest (Tests)
+-  PostgreSQL (ou SQLite pour le POC)
 
 ##  Installation locale
 1. Cloner le dépôt.
@@ -13,7 +14,15 @@ Ce projet déploie le modèle de Machine Learning (Random Forest) développé lo
 3. Lancer l'API : `uvicorn app.main:app --reload`
 4. Accéder à la documentation interactive : `http://localhost:8000/docs`
 
+ ### Installation
+```bash
+git clone https://github.com/antoinechemavonian/futurisys-api.git
+cd futurisys-api
+pip install -r requirements.txt
+
 ##  Structure du projet
 - `app/main.py` : Le code de l'API.
 - `tests/test_api.py` : Les tests unitaires.
 - `modele_attrition.joblib` : Le modèle entraîné.
+
+- 
