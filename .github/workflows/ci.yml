@@ -22,4 +22,4 @@ jobs:
       - name: Lancer les tests
         run: |
           pip install pytest httpx
-          tests/test_api.py
+          pytest tests/test_api.py
