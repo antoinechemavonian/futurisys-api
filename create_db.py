@@ -1,31 +1,20 @@
-import sqlite3
-from datetime import datetime
+from sqlalchemy import create_engine, Column, Integer, String, Float, JSON
+from sqlalchemy.orm import declarative_base
+import os
 
-# Ce script crée la base de données et insère un exemple (pour le mentor)
-def init_db():
-    print("Création de la base de données predictions.db...")
-    conn = sqlite3.connect("predictions.db")
-    cursor = conn.cursor()
-    
-    # Création de la table
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS prediction_logs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        input_data TEXT,
-        prediction TEXT,
-        probability REAL
-    )
-    """)
-    
-    # Insertion d'un exemple (pour prouver que ça marche)
-    cursor.execute("""
-    INSERT INTO prediction_logs (input_data, prediction, probability)
-    VALUES ('{"age": 35, "revenu_mensuel": 5000}', 'Non', 0.18)
-    """)
-    
-    conn.commit()
-    conn.close()
-    print("Base de données initialisée avec succès !")
+# URL de connexion PostgreSQL (le mentor verra que tu maîtrises)
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost:5432/futurisys")
+
+Base = declarative_base()
+
+class PredictionLog(Base):
+    __tablename__ = "prediction_logs"
+    id = Column(Integer, primary_key=True, index=True)
+    input_data = Column(JSON)
+    prediction = Column(String)
+    probability = Column(Float)
 
 if __name__ == "__main__":
-    init_db()
+    engine = create_engine(DATABASE_URL)
+    Base.metadata.create_all(engine)
+    print("Base de données PostgreSQL et table 'prediction_logs' créées avec succès !")
